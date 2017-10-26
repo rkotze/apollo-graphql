@@ -10,7 +10,8 @@ const app = express()
 const typeDefs = `
     type Status {
         code: Int
-        message: String    
+        message: String
+        lastUpdated: Float
     }
     type Query {
         status: Status    
@@ -23,7 +24,8 @@ const resolvers = {
     },
     Status: {
       code: (obj) => obj.code,
-      message: (obj) => obj.msg
+      message: (obj) => obj.msg,
+      lastUpdated: (obj) => new Date().getTime()
     }
 }
 
