@@ -28,14 +28,16 @@ const typeDefs = `
     }
     type Query {
         status: Status
-        cpuDetails(cpuNumber: Int): CPU  
+        cpuDetails(cpuNumber: Int): CPU
+        cpuList: [CPU]  
     }
 `
 
 const resolvers = {
     Query: {
         status: () => ({ code: 200, msg: "OK" }),
-        cpuDetails: (obj, args) => (os.cpus()[args.cpuNumber])
+        cpuDetails: (obj, args) => (os.cpus()[args.cpuNumber]),
+        cpuList: () => (os.cpus())
     },
     Status: {
       code: (obj) => obj.code,
