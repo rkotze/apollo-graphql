@@ -2,6 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser') 
 const { graphqlExpress, graphiqlExpress } = require('apollo-server-express')
 const { makeExecutableSchema } = require('graphql-tools')
+const os = require('os');
 
 const PORT = 3000
 
@@ -13,19 +14,29 @@ const typeDefs = `
         message: String
         lastUpdated: Float
     }
+    type CPU {
+        model: String
+        speed: Int
+    }
     type Query {
-        status: Status    
+        status: Status
+        cpuDetails(cpuNumber: Int): CPU  
     }
 `
 
 const resolvers = {
     Query: {
-        status: () => ({ code: 200, msg: "OK" })
+        status: () => ({ code: 200, msg: "OK" }),
+        cpuDetails: (obj, args) => (os.cpus()[args.cpuNumber])
     },
     Status: {
       code: (obj) => obj.code,
       message: (obj) => obj.msg,
       lastUpdated: (obj) => new Date().getTime()
+    },
+    CPU: {
+        model: (cpu) => cpu.model,
+        speed: (cpu) => cpu.speed,
     }
 }
 
