@@ -8,14 +8,22 @@ const PORT = 3000
 const app = express()
 
 const typeDefs = `
+    type Status {
+        code: Int
+        message: String    
+    }
     type Query {
-        status: String    
+        status: Status    
     }
 `
 
 const resolvers = {
     Query: {
-        status: () => "GraphQL status: OK"
+        status: () => ({ code: 200, msg: "OK" })
+    },
+    Status: {
+      code: (obj) => obj.code,
+      message: (obj) => obj.msg
     }
 }
 
